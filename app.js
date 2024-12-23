@@ -81,7 +81,9 @@ app.use(errorMiddleware);
 
 const startServer = async () => {
   try {
-    await connectDB(process.env.DB_URI);
+    await connectDB(
+      "mongodb+srv://webuyam23:8Zal2faU1es1FK4C@cluster0.rsqd24c.mongodb.net/"
+    );
     console.log(`DB Connected!`);
     app.listen(port, () => console.log(`Server is listening on PORT:${port}`));
   } catch (error) {

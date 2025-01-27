@@ -74,7 +74,8 @@ app.get("/api", async (req, res) => {
   }
 });
 
-app.use("/api/v1/auth", authRoutesV1);
+app.use("/", authRoutesV1);
+// app.use("/api/v1/auth", authRoutesV1);
 // app.use("/api/v1/admin", adminRoutes);
 app.use(notFound);
 app.use(errorMiddleware);

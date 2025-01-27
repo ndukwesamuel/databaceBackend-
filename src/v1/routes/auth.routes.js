@@ -1,8 +1,10 @@
 import express from "express";
 import methodNotAllowed from "../../middlewares/methodNotAllowed.js";
 import {
+  createGuarantor,
   forgotPassword,
   getUser,
+  Guarantor_webhook,
   login,
   register,
   resetPassword,
@@ -21,6 +23,13 @@ router
   //   .patch(auth, updateUser)
   //   .delete(auth, deleteUser)
   .all(methodNotAllowed);
+
+router.route("/guarantor").post(createGuarantor).all(methodNotAllowed);
+router
+  .route("/Guarantor_webhook")
+  .post(Guarantor_webhook)
+  .all(methodNotAllowed);
+
 router.route("/signup").post(userValidator, register).all(methodNotAllowed);
 router.route("/signin").post(login).all(methodNotAllowed);
 router.route("/send-otp").post(sendOTP).all(methodNotAllowed);

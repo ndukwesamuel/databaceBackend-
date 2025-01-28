@@ -105,30 +105,30 @@ export const createGuarantor = async (req, res) => {
   }
 };
 
-export const Guarantor_webhook = async (req, res) => {
-  try {
-    const webhook = req.body;
-    let dojah = webhook?.metadata?.user_id;
-    let photo = webhook?.selfie_url;
-    let verification_status = webhook?.verification_status;
+// export const Guarantor_webhook = async (req, res) => {
+//   try {
+//     const webhook = req.body;
+//     let main_id = webhook?.metadata?.user_id;
+//     let photo = webhook?.selfie_url;
+//     let verification_status = webhook?.verification_status;
 
-    console.log({
-      dojah,
-      photo,
-      verification_status,
-      xxxx: webhook,
-    });
+//     console.log({
+//       main_id,
+//       photo,
+//       verification_status,
+//       xxxx: webhook,
+//     });
 
-    res.status(201).json({
-      photo,
-      verification_status,
-      dojah,
-      data,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//     res.status(201).json({
+//       photo,
+//       verification_status,
+//       dojah,
+//       data,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 // export const GuarantorDetails = async (req, res) => {
 //   try {
@@ -151,6 +151,73 @@ export const Guarantor_webhook = async (req, res) => {
 //     res.status(500).json({ message: error.message });
 //   }
 // };
+
+import mongoose from "mongoose";
+import Guarantor from "../models/Guarantor"; // Import Guarantor model
+import User from "../models/User"; // Import User model
+
+export const Guarantor_webhook = async (req, res) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction(); // Start transaction
+
+    const webhook = req.body;
+    const main_id = webhook?.metadata?.user_id;
+    const photo = webhook?.selfie_url;
+    const verification_status = webhook?.verification_status;
+    const dojah = webhook?.dojah; // Assuming dojah is part of the webhook data
+
+    console.log({
+      main_id,
+      photo,
+      verification_status,
+      dojah,
+      webhook, // Logging the full webhook for debugging
+    });
+
+    // Step 1: Find the Guarantor based on main_id
+    const guarantor = await Guarantor.findOne({ guarantorId: main_id }).session(
+      session
+    );
+
+    if (!guarantor) {
+      throw new Error("Guarantor not found.");
+    }
+
+    // Step 2: Update the Guarantor document
+    guarantor.photo = photo || guarantor.photo; // Update photo if provided
+    guarantor.dojah = dojah || guarantor.dojah; // Update dojah data if provided
+    guarantor.verification_status =
+      verification_status || guarantor.verification_status; // Update verification_status if provided
+
+    // Save updated Guarantor document within the session
+    await guarantor.save({ session });
+
+    console.log({
+      bbbb: guarantor,
+    });
+
+    // Step 4: Commit transaction if both updates are successful
+    await session.commitTransaction();
+    session.endSession(); // End the session
+
+    // Send successful response
+    res.status(200).json({
+      message: "Guarantor and User updated successfully.",
+      photo,
+      verification_status,
+      dojah,
+    });
+  } catch (error) {
+    // Rollback transaction in case of error
+    await session.abortTransaction();
+    session.endSession(); // End the session
+
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const getGuarantorById = async (req, res) => {
   const { id } = req.params;

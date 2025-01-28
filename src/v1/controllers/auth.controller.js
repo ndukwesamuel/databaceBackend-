@@ -44,9 +44,40 @@ export const resetPassword = asyncWrapper(async (req, res, next) => {
   res.status(200).json(result);
 });
 
+// export const createGuarantor = async (req, res) => {
+//   try {
+//     const { guarantorId, signature, photo, dojah } = req.body;
+
+//     // Create a new Guarantor document
+//     const newGuarantor = new guarantorModel({
+//       guarantorId,
+//       signature,
+//       photo,
+//       dojah,
+//     });
+
+//     // Save the document to the database
+//     await newGuarantor.save();
+
+//     // Return the created document
+//     res.status(201).json(newGuarantor);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 export const createGuarantor = async (req, res) => {
   try {
     const { guarantorId, signature, photo, dojah } = req.body;
+
+    // Check if a guarantor with the same guarantorId exists
+    const existingGuarantor = await guarantorModel.findOne({ guarantorId });
+
+    if (existingGuarantor) {
+      // Delete the existing guarantor
+      await guarantorModel.deleteOne({ guarantorId });
+      console.log(`Guarantor with ID ${guarantorId} deleted successfully.`);
+    }
 
     // Create a new Guarantor document
     const newGuarantor = new guarantorModel({
@@ -60,9 +91,17 @@ export const createGuarantor = async (req, res) => {
     await newGuarantor.save();
 
     // Return the created document
-    res.status(201).json(newGuarantor);
+    res.status(201).json({
+      success: true,
+      message: "Guarantor created successfully",
+      data: newGuarantor,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error creating guarantor",
+      error: error.message,
+    });
   }
 };
 
@@ -152,6 +191,48 @@ export const Guarantor_webhook = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// export const GuarantorDetails = async (req, res) => {
+//   try {
+//     const { guarantorId, signature, photo, dojah } = req.body;
+
+//     // Create a new Guarantor document
+//     const newGuarantor = new guarantorModel({
+//       guarantorId,
+//       signature,
+//       photo,
+//       dojah,
+//     });
+
+//     // Save the document to the database
+//     await newGuarantor.save();
+
+//     // Return the created document
+//     res.status(201).json(newGuarantor);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+export const getGuarantorById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    console.log({
+      ggg: id,
+    });
+
+    const guarantor = await guarantorModel.find({ guarantorId: id }); // Fetch guarantor by ID
+
+    res.status(200).json({ success: true, data: guarantor });
+    // res.status(200).json({ success: true, data: id });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching guarantor details",
+      error,
+    });
   }
 };
 

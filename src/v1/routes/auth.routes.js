@@ -3,6 +3,7 @@ import methodNotAllowed from "../../middlewares/methodNotAllowed.js";
 import {
   createGuarantor,
   forgotPassword,
+  getGuarantorById,
   getUser,
   Guarantor_webhook,
   login,
@@ -28,6 +29,11 @@ router.route("/guarantor").post(createGuarantor).all(methodNotAllowed);
 router
   .route("/Guarantor_webhook")
   .post(Guarantor_webhook)
+  .all(methodNotAllowed);
+
+router
+  .route("/Guarantor_webhook/:id")
+  .post(getGuarantorById)
   .all(methodNotAllowed);
 
 router.route("/signup").post(userValidator, register).all(methodNotAllowed);

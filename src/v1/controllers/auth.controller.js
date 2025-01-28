@@ -108,81 +108,17 @@ export const createGuarantor = async (req, res) => {
 export const Guarantor_webhook = async (req, res) => {
   try {
     const webhook = req.body;
+    let dojah = webhook?.metadata?.user_id;
+    let photo = webhook?.selfie_url;
+    let verification_status = webhook?.verification_status;
 
     console.log({
+      dojah,
+      photo,
+      verification_status,
       xxxx: webhook,
     });
 
-    let data = {
-      metadata: {
-        ipinfo: {
-          status: "success",
-          country: "Nigeria",
-          city: "Lagos",
-          district: "",
-          zip: "",
-          lat: 6.4474,
-          lon: 3.3903,
-          timezone: "Africa/Lagos",
-          isp: "SP 120",
-          org: "",
-          as: "AS37340 SPECTRANET LIMITED",
-          mobile: true,
-          proxy: false,
-          hosting: false,
-          query: "154.120.84.68",
-          region_name: "Lagos",
-        },
-        device_info:
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-        user_id: "199",
-      },
-      data: {
-        index: {
-          data: {},
-          message: "Successfully continued to the main checks.",
-          status: true,
-        },
-        selfie: {
-          data: {
-            selfie_url:
-              "https://images.dojah.io/selfie_sample_image_1720624219.jpg",
-          },
-          message: "Successfully validated your liveness",
-          status: true,
-        },
-      },
-      message: "Successfully completed the verification.",
-      reference_id: "DJ-E17536148B",
-      widget_id: "678e30aed6a17fd17ac3ef7d",
-      verification_mode: "",
-      verification_type: null,
-      verification_value: null,
-      verification_url:
-        "https://app.dojah.io/verifications/bio-data/5fe6fcfa-b4be-4759-a803-68a82147355e",
-      selfie_url: "https://images.dojah.io/selfie_sample_image_1720624219.jpg",
-      status: true,
-      aml: { status: false },
-      verification_status: "Completed",
-    };
-    // const { guarantorId, signature, photo, dojah } = req.body;
-
-    // // Create a new Guarantor document
-    // const newGuarantor = new guarantorModel({
-    //   guarantorId,
-    //   signature,
-    //   photo,
-    //   dojah,
-    // });
-
-    let dojah = data?.metadata?.user_id;
-    let photo = data?.selfie_url;
-    let verification_status = data?.verification_status;
-
-    // // Save the document to the database
-    // await newGuarantor.save();
-
-    // Return the created document
     res.status(201).json({
       photo,
       verification_status,

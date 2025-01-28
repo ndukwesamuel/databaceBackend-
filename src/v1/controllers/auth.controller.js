@@ -210,6 +210,10 @@ export const Guarantor_webhook = async (req, res) => {
       dojah,
     });
   } catch (error) {
+    console.log({
+      nnn: error,
+    });
+
     // Rollback transaction in case of error
     await session.abortTransaction();
     session.endSession(); // End the session

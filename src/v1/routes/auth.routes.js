@@ -33,7 +33,7 @@ router
 
 router
   .route("/Guarantor_webhook/:id")
-  .post(getGuarantorById)
+  .get(getGuarantorById)
   .all(methodNotAllowed);
 
 router.route("/signup").post(userValidator, register).all(methodNotAllowed);

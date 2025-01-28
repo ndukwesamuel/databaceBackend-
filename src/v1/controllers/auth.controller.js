@@ -214,7 +214,7 @@ export const Guarantor_webhook = async (req, res) => {
     await session.abortTransaction();
     session.endSession(); // End the session
 
-    console.error(error);
+    console.error({ err: error.message });
     res.status(500).json({ message: error.message });
   }
 };

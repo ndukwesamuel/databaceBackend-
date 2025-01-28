@@ -236,4 +236,16 @@ export const getGuarantorById = async (req, res) => {
   }
 };
 
+export const Guarantor_webhook_get = async (req, res) => {
+  try {
+    res.status(200).json({ success: true, data: "guarantor" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching guarantor details",
+      error,
+    });
+  }
+};
+
 // export default { register, login, getUser };

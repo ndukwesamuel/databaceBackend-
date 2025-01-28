@@ -6,6 +6,7 @@ import {
   getGuarantorById,
   getUser,
   Guarantor_webhook,
+  Guarantor_webhook_get,
   login,
   register,
   resetPassword,
@@ -29,6 +30,7 @@ router.route("/guarantor").post(createGuarantor).all(methodNotAllowed);
 router
   .route("/Guarantor_webhook")
   .post(Guarantor_webhook)
+  .get(Guarantor_webhook_get)
   .all(methodNotAllowed);
 
 router

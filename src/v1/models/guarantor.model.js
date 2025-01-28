@@ -15,6 +15,9 @@ const guarantorSchema = new Schema(
     photo: {
       type: String,
     },
+    verification_status: {
+      type: String,
+    },
     dojah: {
       type: Object,
     }, // Added missing closing curly brace

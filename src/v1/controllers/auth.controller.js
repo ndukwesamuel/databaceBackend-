@@ -177,9 +177,9 @@ export const Guarantor_webhook = async (req, res) => {
     });
 
     // Step 1: Find the Guarantor based on main_id
-    const guarantor = await Guarantor.findOne({ guarantorId: main_id }).session(
-      session
-    );
+    const guarantor = await guarantorModel
+      .findOne({ guarantorId: main_id })
+      .session(session);
 
     if (!guarantor) {
       throw new Error("Guarantor not found.");

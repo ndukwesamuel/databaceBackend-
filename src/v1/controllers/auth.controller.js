@@ -206,8 +206,8 @@ export const getGuarantorById = async (req, res) => {
   });
 
   try {
-    // const guarantor = await guarantorModel.find({ guarantorId: id }); // Fetch guarantor by ID
-    // res.status(200).json({ success: true, data: guarantor });
+    const guarantor = await guarantorModel.find({ guarantorId: id }); // Fetch guarantor by ID
+    res.status(200).json({ success: true, data: guarantor });
     // res.status(200).json({ success: true, data: id });
   } catch (error) {
     res.status(500).json({

@@ -17,6 +17,7 @@ const guarantorSchema = new Schema(
     },
     verification_status: {
       type: String,
+      default: "not_verified",
     },
     dojah: {
       type: Object,

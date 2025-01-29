@@ -27,6 +27,7 @@ router
   .all(methodNotAllowed);
 
 router.route("/guarantor").post(createGuarantor).all(methodNotAllowed);
+// router.route("/guarantor/:id").get(createGuarantor).all(methodNotAllowed);
 router
   .route("/Guarantor_webhook")
   .post(Guarantor_webhook)
